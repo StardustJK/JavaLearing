@@ -1,5 +1,5 @@
 
-package leastCommonMultiple;
+package project3;
 
 import java.io.IOException;
 import java.util.Scanner;

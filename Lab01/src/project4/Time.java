@@ -1,4 +1,4 @@
-package time;
+package project4;
 
 public class Time {
 

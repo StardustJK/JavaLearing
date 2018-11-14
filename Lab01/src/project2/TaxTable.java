@@ -1,7 +1,5 @@
-/**
- * 
- */
-package taxTable;
+
+package project2;
 
 public class TaxTable {
 

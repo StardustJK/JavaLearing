@@ -1,4 +1,4 @@
-package rectangle;
+package project4;
 
 public class Rectangle {
 
