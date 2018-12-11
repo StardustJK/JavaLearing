@@ -8,7 +8,7 @@ import java.util.Scanner;
 //客户端
 
 
-public class P10Client {
+public class P13C {
 
 	public static void main(String[] args) {
 		try {
@@ -17,7 +17,7 @@ public class P10Client {
 			
 			//创建数据流
 			var out =new DataOutputStream(socket.getOutputStream());
-			var in=new DataInputStream(socket.getInputStream());
+			var in=new ObjectInputStream(socket.getInputStream());
 			//输入
 			System.out.println("please input a double data");
 			var scanner = new Scanner(System.in);
@@ -28,12 +28,13 @@ public class P10Client {
 			System.out.println("sent r : " + data);
 
 			//从服务器接收
-			String s=in.readUTF();
-			System.out.println("string is:"+s);
+			Object s=in.readObject();
+			System.out.println("string object is:"+s);
 			
+			scanner.close();
 			socket.close();
 		}
-		catch(IOException e) {
+		catch(IOException | ClassNotFoundException e) {
 			System.out.println(e.toString());
 		}
 

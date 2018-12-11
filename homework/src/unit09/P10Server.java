@@ -29,8 +29,9 @@ public class P10Server {
 			var s=data+"";
 			
 			//发回客户端
-			out.writeChars(s);
+			out.writeUTF(s);
 			
+			server.close();
 			socket.close();
 			System.out.println("server closed");
 					
