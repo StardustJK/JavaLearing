@@ -5,7 +5,7 @@ import java.util.Date;
 public abstract class GeometricObject {
 	private String color;
 	private boolean filled;
-	private Date dateCreated;
+	private Date dateCreated=new Date();
 
 	public GeometricObject() {
 	}
@@ -36,7 +36,7 @@ public abstract class GeometricObject {
 	}
 
 	public String toString() {
-		return this.toString();
+		return( "Color: "+color+"isFilled: "+filled+"CreatedDate: "+dateCreated);
 	}
 
 }

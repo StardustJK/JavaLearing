@@ -9,15 +9,17 @@ public class Octagon extends GeometricObject implements Comparable<Octagon>, Clo
 	public static void main(String[] args) {
 		Octagon o = new Octagon(5);
 		System.out.println(o.toString());
+
+		// clone
 		Octagon x = null;
 		try {
 			x = (Octagon) o.clone();
 
 		} catch (CloneNotSupportedException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
+			e.printStackTrace();  
 		}
 		System.out.println(x.toString());
+		// 对比结果
 		if (o.compareTo(x) == 0) {
 			System.out.println("它们是同一个对象");
 

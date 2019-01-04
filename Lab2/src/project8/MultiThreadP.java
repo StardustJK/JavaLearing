@@ -6,27 +6,39 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MultiThreadP {
+	// 线程AB的锁
 	Lock locka = new ReentrantLock();
 	Lock lockb = new ReentrantLock();
 
 	Condition ca = locka.newCondition();
 	Condition cb = lockb.newCondition();
 
-	static int round = 0, originRound = 0;
+	static int round = 0, originRound = 0;// 轮数
 	int sleepa, sleepb;// 用于输出A、B sleep的时间
 	char a, b;// A,B输出的字符
-	int sa = 0, sb = 0, fsa = 0, fsb = 0;// A,B得分记录
+	int sa = 0, sb = 0, fsa = 0, fsb = 0;// A,B每局得分记录和总得分
 
 	public static void main(String[] args) {
-		System.out.println("please input round");
+
 		Scanner in = new Scanner(System.in);
-		originRound = in.nextInt();
-		round = originRound;
-		in.close();
+		while (true) {
+			// 输入轮数
+			System.out.println("please input round(>0)");
+			originRound = in.nextInt();
+			round = originRound;
+			if (originRound <= 0) {
+				System.out.println("wrong round,please input again");
+			} else {
+				in.close();
+				break;
+			}
+		}
+		// 结果输出
 		System.out.println("Round" + "   Thread A      " + "                ThreadB");
 		System.out.println("\t" + "sleep     " + "Random    " + "Points    " + "sleep     " + "Random    " + "Points");
 		System.out.println(
 				"\t" + "time(ms)  " + "charater  " + "obtained  " + "time(ms)  " + "charater  " + "obtained  ");
+		// 生成、启动线程
 		MultiThreadP t = new MultiThreadP();
 		ThreadC tc = t.new ThreadC();
 		new Thread(tc).start();
@@ -36,18 +48,19 @@ public class MultiThreadP {
 		tb.start();
 	}
 
+	// 线程A
 	class ThreadA extends Thread {
 		@Override
 		public void run() {
 			while (true) {
-				locka.lock();
+				locka.lock();// 获得锁
 				if (round == 0) {// 线程结束
 					break;
 				}
 				// 产生sleep的随机数并进行sleep
 				sleepa = (int) (Math.random() * 1000);
 				try {
-					locka.unlock();
+					locka.unlock();// sleep的过程中先放掉锁
 					Thread.sleep(sleepa);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -57,7 +70,7 @@ public class MultiThreadP {
 				a = (char) (Math.random() * 100 % 26 + 97);
 				ca.signal();
 				try {
-					ca.await();
+					ca.await();// 等待C处理完后放出信号
 					locka.unlock();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -66,6 +79,7 @@ public class MultiThreadP {
 		}
 	}
 
+	// 线程B
 	class ThreadB extends Thread {
 		@Override
 		public void run() {
@@ -97,6 +111,7 @@ public class MultiThreadP {
 		}
 	}
 
+	// 线程C
 	class ThreadC implements Runnable {
 
 		@Override
@@ -130,11 +145,13 @@ public class MultiThreadP {
 				fsa = fsa + sa;
 				fsb = fsb + sb;
 				round--;
+				// 释放锁
 				ca.signal();
 				cb.signal();
 				lockb.unlock();
 				locka.unlock();
 			}
+			// 最终得分
 			if (fsa > fsb)
 				System.out.println("Final result:A got " + fsa + ", is the winner");
 			else if (fsa < fsb)
