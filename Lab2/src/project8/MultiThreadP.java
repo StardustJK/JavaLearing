@@ -53,14 +53,12 @@ public class MultiThreadP {
 		@Override
 		public void run() {
 			while (true) {
-				locka.lock();// 获得锁
 				if (round == 0) {// 线程结束
 					break;
 				}
 				// 产生sleep的随机数并进行sleep
 				sleepa = (int) (Math.random() * 1000);
 				try {
-					locka.unlock();// sleep的过程中先放掉锁
 					Thread.sleep(sleepa);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -84,7 +82,6 @@ public class MultiThreadP {
 		@Override
 		public void run() {
 			while (true) {
-				lockb.lock();
 				// 线程结束
 				if (round == 0) {
 					break;
@@ -92,7 +89,6 @@ public class MultiThreadP {
 				// 产生sleep参数并且sleep
 				sleepb = (int) (Math.random() * 1000);
 				try {
-					lockb.unlock();
 					Thread.sleep(sleepb);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
